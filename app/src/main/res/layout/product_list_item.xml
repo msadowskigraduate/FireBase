@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    android:padding="10dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvProductName"
+        android:layout_marginLeft="10dp"
+        android:text="name"
+        android:textAppearance="?android:attr/textAppearanceLarge">
+    </TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvProductPrice"
+        android:layout_marginLeft="10dp"
+        android:text="price"
+        android:textAppearance="?android:attr/textAppearanceLarge">
+    </TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvProductQuantity"
+        android:layout_marginLeft="10dp"
+        android:text="quantity"
+        android:textAppearance="?android:attr/textAppearanceLarge">
+    </TextView>
+    <CheckBox
+        android:id="@+id/cbProductBought"
+        android:clickable="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_weight="1"
+        android:focusable="false"
+        android:text="Bought?" />
+
+    <CheckBox
+        android:id="@+id/bDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
+        android:text="Delete"
+        android:textColor="@color/colorAccent"/>
+        <!--android:focusable="false"-->
+
+</LinearLayout>

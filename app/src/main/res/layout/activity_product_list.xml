@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <ListView
+        android:id="@+id/lvProducts"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:descendantFocusability="blocksDescendants">
+
+    </ListView>
+
+
+        <EditText
+            android:id="@+id/etNewProductName"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/edittext_hint_new_task"
+            android:visibility="gone"
+            android:inputType="none">
+            <requestFocus></requestFocus>
+        </EditText>
+
+        <EditText
+            android:id="@+id/etNewProductPrice"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Product Price"
+            android:visibility="gone"
+            android:inputType="none">
+        </EditText>
+
+        <EditText
+            android:id="@+id/etNewProductQuantity"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:hint="Product Quantity"
+            android:visibility="gone"
+            android:inputType="none">
+        </EditText>
+
+        <CheckBox
+            android:id="@+id/cbNewProductBought"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:text="Bought?"
+            android:visibility="gone">
+        </CheckBox>
+
+
+    <LinearLayout
+        android:id="@+id/llNewProductButtons"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/button_save">
+        </Button>
+
+        <Button
+            android:id="@+id/btnCancel"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/button_cancel">
+        </Button>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llControlButtons"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnAddNew"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/button_add">
+        </Button>
+
+        <Button
+            android:id="@+id/btnClearCompleted"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/button_clear">
+        </Button>
+    </LinearLayout>
+</LinearLayout>
