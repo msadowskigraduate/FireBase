@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -15,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +24,7 @@ public class ProductListActivity extends SuperActivity {
     private Button btnClearCompleted;
     private Button btnSave;
     private Button btnCancel;
+    private Button btnEdit;
     private EditText etNewProduct;
     private EditText etNewProductPrice;
     private EditText etNewProductQuantity;
@@ -63,11 +64,12 @@ public class ProductListActivity extends SuperActivity {
         etNewProductPrice = (EditText) findViewById(R.id.etNewProductPrice);
         etNewProductQuantity = (EditText) findViewById(R.id.etNewProductQuantity);
         cbNewProductBought = (CheckBox) findViewById(R.id.cbNewProductBought);
+        btnEdit = (Button) findViewById(R.id.btnEdit);
     }
 
     private void initListView() {
         fillListViewData();
-        initListViewOnItemClick();
+        initUpdateListViewOnItemClick();
     }
 
     private void fillListViewData() {
@@ -113,16 +115,20 @@ public class ProductListActivity extends SuperActivity {
         super.onDestroy();
     }
 
-    private void initListViewOnItemClick() {
-//        listViewProducts.setOnItemClickListener(new OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Log.e("BUTTON PRESSED", String.valueOf(position));
-//                Product product = products.get(position);
-//                productDatabase.deleteProduct(product.getProductId());
-//                updateListViewData();
-//            }
-//        });
+    private void initUpdateListViewOnItemClick() {
+        listViewProducts.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Product product = products.get(position);
+                etNewProduct.setText( product.getProductName());
+                etNewProductPrice.setText(String.valueOf(product.getProductPrice()));
+                etNewProductQuantity.setText(String.valueOf(product.getProductQuantity()));
+                cbNewProductBought.setChecked(product.isBought());
+                showProductEditButtons();
+                updateListViewData();
+                btnEdit.setTag(product);
+            }
+        });
     }
 
     private void updateListViewData() {
@@ -144,12 +150,13 @@ public class ProductListActivity extends SuperActivity {
                         saveNewTask();
                         break;
                     case R.id.btnCancel:
-                        cancelNewTask();
+                        cancelNewProduct();
                         break;
                     case R.id.btnClearCompleted:
                         returnToMainActivity();
-                        //deleteMarkedProducts();
                         break;
+                    case R.id.btnEdit:
+                        editProduct();
                     default:
                         break;
                 }
@@ -161,7 +168,7 @@ public class ProductListActivity extends SuperActivity {
         btnCancel.setOnClickListener(onClickListener);
     }
 
-    private void showOnlyNewTaskPanel() {
+    private void showProductCreationButtons() {
         setVisibilityOf(llControlButtons, false);
         setVisibilityOf(llNewTaskButtons, true);
         setVisibilityOf(etNewProduct, true);
@@ -171,6 +178,11 @@ public class ProductListActivity extends SuperActivity {
 
     }
 
+    private void showProductEditButtons() {
+        showProductCreationButtons();
+        setVisibilityOf(btnSave, false);
+    }
+
     private void showOnlyControlPanel() {
         setVisibilityOf(llControlButtons, true);
         setVisibilityOf(llNewTaskButtons, false);
@@ -178,6 +190,7 @@ public class ProductListActivity extends SuperActivity {
         setVisibilityOf(etNewProductPrice, false);
         setVisibilityOf(etNewProductQuantity, false);
         setVisibilityOf(cbNewProductBought, false);
+        setVisibilityOf(btnEdit, false);
     }
 
     private void setVisibilityOf(View v, boolean visible) {
@@ -186,7 +199,7 @@ public class ProductListActivity extends SuperActivity {
     }
 
     private void addNewTask(){
-        showOnlyNewTaskPanel();
+        showProductCreationButtons();
     }
 
     private void saveNewTask(){
@@ -210,15 +223,39 @@ public class ProductListActivity extends SuperActivity {
             etNewProduct.setError("There are some errors in your product definition");
         } else {
             productDatabase.insertProduct(productName, productPrice, productQuantity, isBought);
-            etNewProduct.setText("");
+            fieldReset();
             showOnlyControlPanel();
         }
         updateListViewData();
     }
 
-    private void cancelNewTask() {
+    private void fieldReset() {
         etNewProduct.setText("");
+        etNewProductPrice.setText("");
+        etNewProductQuantity.setText("");
+        cbNewProductBought.setChecked(false);
+    }
+    private void cancelNewProduct() {
+        fieldReset();
         showOnlyControlPanel();
+    }
+
+    private void editProduct() {
+        Product product  = (Product) btnEdit.getTag();
+        Log.e("BUTTON PRESSED", String.valueOf(product.getProductId()));
+        try {
+            product.setProductName(etNewProduct.getText().toString());
+            product.setProductPrice(Float.valueOf(etNewProductPrice.getText().toString()));
+            product.setProductQuantity(Integer.valueOf(etNewProductQuantity.getText().toString()));
+            product.setBought(cbNewProductBought.isChecked());
+        }
+        catch (Exception ex) {
+            btnEdit.setError("There are some errors in your product definition");
+        }
+        productDatabase.updateProductList(product);
+        fieldReset();
+        showOnlyControlPanel();
+        updateListViewData();
     }
 
     public void returnToMainActivity() {

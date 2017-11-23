@@ -61,6 +61,13 @@
         android:visibility="gone">
 
         <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Edit Record" />
+
+        <Button
             android:id="@+id/btnSave"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

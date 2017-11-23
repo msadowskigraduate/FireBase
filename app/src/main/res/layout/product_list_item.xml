@@ -46,7 +46,7 @@
         android:layout_weight="1"
         android:layout_marginLeft="10dp"
         android:text="Delete"
-        android:textColor="@color/colorAccent"/>
-        <!--android:focusable="false"-->
+        android:textColor="@color/colorAccent"
+        android:focusable="false"/>
 
 </LinearLayout>
