@@ -157,6 +157,7 @@ public class ProductListActivity extends SuperActivity {
                         break;
                     case R.id.btnEdit:
                         editProduct();
+                        break;
                     default:
                         break;
                 }
@@ -165,6 +166,7 @@ public class ProductListActivity extends SuperActivity {
         btnAddNew.setOnClickListener(onClickListener);
         btnClearCompleted.setOnClickListener(onClickListener);
         btnSave.setOnClickListener(onClickListener);
+        btnEdit.setOnClickListener(onClickListener);
         btnCancel.setOnClickListener(onClickListener);
     }
 
@@ -175,12 +177,14 @@ public class ProductListActivity extends SuperActivity {
         setVisibilityOf(etNewProductPrice, true);
         setVisibilityOf(etNewProductQuantity, true);
         setVisibilityOf(cbNewProductBought, true);
-
+        setVisibilityOf(btnEdit, false);
+        setVisibilityOf(btnSave, true);
     }
 
     private void showProductEditButtons() {
         showProductCreationButtons();
         setVisibilityOf(btnSave, false);
+        setVisibilityOf(btnEdit, true);
     }
 
     private void showOnlyControlPanel() {
