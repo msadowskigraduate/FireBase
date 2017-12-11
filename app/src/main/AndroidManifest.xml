@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".OptionsActivity" />
         <activity android:name=".SuperActivity" />
-        <activity android:name=".ProductListActivity"/>
+        <activity android:name=".ProductListActivity" />
+        <activity android:name=".FirebaseViewActivity"></activity>
     </application>
 
 </manifest>

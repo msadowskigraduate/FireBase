@@ -31,6 +31,15 @@ public class MainActivity extends SuperActivity {
             }
         });
 
+        Button button3 = (Button) findViewById(R.id.firebase);
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), FirebaseViewActivity.class);
+                startActivity(intent);
+            }
+        });
+
         VIEW_ADDRESS = (ViewGroup) ((ViewGroup) this
                 .findViewById(android.R.id.content)).getChildAt(0);
 
