@@ -67,25 +67,6 @@ public class FirebaseViewActivity extends SuperActivity {
             }
         });
 
-        // app_title change listener
-        mFirebaseInstance.getReference("products").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                products = new ArrayList<>();
-                for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()) {
-                    Product product = noteDataSnapshot.getValue(Product.class);
-                    products.add(product);
-                    Log.e(TAG, product.getProductName());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.e(TAG, "Failed to read app title value.", error.toException());
-            }
-        });
-
         // Save / update the user
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
