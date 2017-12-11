@@ -1,10 +1,12 @@
 package com.s17983.msadowski.miniproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.google.firebase.database.DataSnapshot;
@@ -17,18 +19,18 @@ import java.util.ArrayList;
 
 public class FirebaseViewActivity extends SuperActivity {
     private static final String TAG = FirebaseViewActivity.class.getSimpleName();
-
+    ArrayList<Product> products;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
 
-    private long productId;
+    private String productId;
 
     private Button btnSave;
+    private Button btnReturn;
     private EditText etName;
     private EditText etPrice;
     private EditText etQuantity;
-
-    ArrayList<Product> products;
+    private CheckBox cbBought;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,15 +84,14 @@ public class FirebaseViewActivity extends SuperActivity {
                     productPriceStr = "0";
                 }
                 productPrice = Float.valueOf(productPriceStr);
-                if (productId == 0) {
-//
-//                try {
-//                    productQuantity = Integer.valueOf(etNewProductQuantity.getText().toString());
-//                } catch (NumberFormatException nfExp)
-//                {
-//                    etNewProductQuantity.setError(nfExp.getMessage().toString());
-//                }
-//                isBought = cbNewProductBought.isChecked();
+                if (TextUtils.isEmpty(productId)) {
+
+                    try {
+                        productQuantity = Integer.valueOf(etQuantity.getText().toString());
+                    } catch (NumberFormatException nfExp) {
+                        etQuantity.setError(nfExp.getMessage().toString());
+                    }
+                    isBought = cbBought.isChecked();
                     if (productName.equals("") || productQuantity == 0 || productPrice == 0f) {
                         etName.setError("There are some errors in your product definition");
                     } else {
@@ -102,17 +103,6 @@ public class FirebaseViewActivity extends SuperActivity {
                 }
             }
         });
-
-        toggleButton();
-    }
-
-    // Changing button text
-    private void toggleButton() {
-        if (productId > 0) {
-            btnSave.setText("Save");
-        } else {
-            btnSave.setText("Update");
-        }
     }
 
     /**
@@ -121,10 +111,10 @@ public class FirebaseViewActivity extends SuperActivity {
     public void createProduct(String productName, float productPrice,
                               int productQuantity, boolean isBought) {
 
-        if (TextUtils.isEmpty(String.valueOf(productId))) {
-            String id = mFirebaseDatabase.push().getKey();
-            productId = Long.parseLong(id);
-        }
+
+        productId = mFirebaseDatabase.push().getKey();
+
+
         Product product = Product.builder()
                 .productId(productId)
                 .productName(productName)
@@ -157,7 +147,6 @@ public class FirebaseViewActivity extends SuperActivity {
                 Log.e(TAG, "User data is changed!" + product.getProductName());
 
                 fieldReset();
-                toggleButton();
             }
 
             @Override
@@ -178,14 +167,23 @@ public class FirebaseViewActivity extends SuperActivity {
 
     private void initGUI() {
         btnSave = (Button) findViewById(R.id.btnFirebaseSave);
+        btnReturn = (Button) findViewById(R.id.btnReturn);
         etName = (EditText) findViewById(R.id.name);
         etPrice = (EditText) findViewById(R.id.price);
+        etQuantity = (EditText) findViewById(R.id.quantity);
+        cbBought = (CheckBox) findViewById(R.id.cbProductBought);
     }
 
     private void fieldReset() {
         etName.setText("");
         etPrice.setText("");
-//        etNewProductQuantity.setText("");
-//        cbNewProductBought.setChecked(false);
+        etQuantity.setText("");
+        cbBought.setChecked(false);
     }
+
+    public void returnToMainActivity(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
 }

@@ -1,14 +1,15 @@
 package com.s17983.msadowski.miniproject;
 
 import android.app.Activity;
-import android.content.Context;
-import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
+
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class FirebaseAdapter extends ArrayAdapter<Product> {
 
     private List<Product> products;
     private Activity context;
-
+    private DatabaseReference mFirebaseDatabase;
     public static class ViewHolder {
         public TextView tvProductName;
         public TextView tvProductPrice;
@@ -29,10 +30,11 @@ public class FirebaseAdapter extends ArrayAdapter<Product> {
         public CheckBox cbDelete;
     }
 
-    public FirebaseAdapter(Activity context, List<Product> products) {
+    public FirebaseAdapter(Activity context, List<Product> products, DatabaseReference mFirebaseDatabase) {
         super(context, R.layout.product_list_item, products);
         this.context = context;
         this.products = products;
+        this.mFirebaseDatabase = mFirebaseDatabase;
     }
 
     @Override
@@ -54,7 +56,10 @@ public class FirebaseAdapter extends ArrayAdapter<Product> {
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            Log.e("Deleting...", "IN PROCESS position: " + position);
                             Product product = products.get(position);
+                            Log.e("Deleting item of ID: " + product.getProductId(), " position: " + position);
+                            mFirebaseDatabase.child(product.getProductId()).removeValue();
                             products.remove(position);
                             notifyDataSetChanged();
                         }

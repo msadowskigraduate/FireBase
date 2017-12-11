@@ -18,7 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class Product {
-    private long productId;
+    private String productId;
     private String productName;
     private float productPrice;
     private int productQuantity;
