@@ -13,6 +13,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class FirebaseViewActivity extends SuperActivity {
     private static final String TAG = FirebaseViewActivity.class.getSimpleName();
 
@@ -26,6 +28,7 @@ public class FirebaseViewActivity extends SuperActivity {
     private EditText etPrice;
     private EditText etQuantity;
 
+    ArrayList<Product> products;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +46,10 @@ public class FirebaseViewActivity extends SuperActivity {
         mFirebaseDatabase = mFirebaseInstance.getReference("products");
 
         // store app title to 'app_title' node
-        mFirebaseInstance.getReference("products").setValue("Realtime Database");
+        mFirebaseInstance.getReference("android-firebase-database").setValue("Realtime Database");
 
         // app_title change listener
-        mFirebaseInstance.getReference("products").addValueEventListener(new ValueEventListener() {
+        mFirebaseInstance.getReference("android-firebase-database").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e(TAG, "App title updated");
@@ -55,6 +58,25 @@ public class FirebaseViewActivity extends SuperActivity {
 
                 // update toolbar title
                 getSupportActionBar().setTitle(appTitle);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.e(TAG, "Failed to read app title value.", error.toException());
+            }
+        });
+
+        // app_title change listener
+        mFirebaseInstance.getReference("products").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                products = new ArrayList<>();
+                for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()) {
+                    Product product = noteDataSnapshot.getValue(Product.class);
+                    products.add(product);
+                    Log.e(TAG, product.getProductName());
+                }
             }
 
             @Override
