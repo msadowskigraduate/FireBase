@@ -3,7 +3,7 @@
     <string name="message">Message</string>
     <string name="database_name">product_list_database</string>
     <string name="button_add">New Product</string>
-    <string name="button_clear">Return</string>
+    <string name="button_clear">Refresh</string>
     <string name="edittext_hint_new_task">New product</string>
     <string name="button_save">Save product</string>
     <string name="button_cancel">Cancel</string>

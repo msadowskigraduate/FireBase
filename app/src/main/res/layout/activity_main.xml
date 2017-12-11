@@ -97,6 +97,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/button_clear"></Button>
+            android:text="@string/button_clear"
+            android:onClick="refreshMainActivity"></Button>
     </LinearLayout>
 </LinearLayout>

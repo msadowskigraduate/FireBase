@@ -1,9 +1,7 @@
 package com.s17983.msadowski.miniproject;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,9 +57,7 @@ public class MainActivity extends SuperActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e(TAG, "App title updated");
-
                 String appTitle = dataSnapshot.getValue(String.class);
-
                 // update toolbar title
                 getSupportActionBar().setTitle(appTitle);
             }
@@ -72,7 +68,6 @@ public class MainActivity extends SuperActivity {
                 Log.e(TAG, "Failed to read app title value.", error.toException());
             }
         });
-
         // app_title change listener
         mFirebaseInstance.getReference("products").addValueEventListener(new ValueEventListener() {
             @Override
@@ -85,7 +80,6 @@ public class MainActivity extends SuperActivity {
                     fillListViewData(products);
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
@@ -105,7 +99,6 @@ public class MainActivity extends SuperActivity {
                 for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()) {
                     Product product = noteDataSnapshot.getValue(Product.class);
                     products.add(product);
-                    Log.e(TAG, product.getProductName());
                     fillListViewData(products);
                 }
             }
@@ -119,6 +112,8 @@ public class MainActivity extends SuperActivity {
 
     }
 
+    //TODO Edit
+    
     private void fillListViewData(List<Product> products) {
         listAdapter = new FirebaseAdapter(this, products, mFirebaseDatabase);
         listViewProducts.setAdapter(listAdapter);
@@ -126,5 +121,10 @@ public class MainActivity extends SuperActivity {
 
     private void initializeGUI() {
         listViewProducts = (ListView) findViewById(R.id.lvProducts);
+    }
+
+    public void refreshMainActivity(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }
