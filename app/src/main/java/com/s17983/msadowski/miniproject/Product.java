@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.Arrays;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,7 +40,7 @@ public class Product implements Parcelable{
         parcel.writeString(productName);
         parcel.writeFloat(productPrice);
         parcel.writeInt(productQuantity);
-        parcel.writeString(String.valueOf(isBought));
+        parcel.writeByte((byte) (isBought ? 1 : 0));
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -56,6 +58,6 @@ public class Product implements Parcelable{
         productName = in.readString();
         productPrice = in.readFloat();
         productQuantity = in.readInt();
-        isBought = Boolean.getBoolean(in.readString());
+        isBought = in.readByte() != 0;
     }
 }

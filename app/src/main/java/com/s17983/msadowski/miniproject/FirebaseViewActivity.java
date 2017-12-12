@@ -122,7 +122,7 @@ public class FirebaseViewActivity extends SuperActivity {
         mFirebaseDatabase.child(String.valueOf(productId)).child("productName").setValue(name);
         mFirebaseDatabase.child(String.valueOf(productId)).child("productPrice").setValue(price);
         mFirebaseDatabase.child(String.valueOf(productId)).child("productQuantity").setValue(quantity);
-        mFirebaseDatabase.child(String.valueOf(productId)).child("isBought").setValue(isbought);
+        mFirebaseDatabase.child(String.valueOf(productId)).child("bought").setValue(isbought);
     }
 
     private void initGUI() {
