@@ -40,6 +40,21 @@ public class FirebaseViewActivity extends SuperActivity {
         setContentView(R.layout.activity_firebase_view);
 
         initGUI();
+
+        Intent i = getIntent();
+        if(i.getExtras() != null && i.getExtras().getParcelable("product")!= null) {
+            setButtonListener(false);
+            Product product = i.getExtras().getParcelable("product");
+            try {
+                productId = product.getProductId();
+                setValues(product.getProductName(), String.valueOf(product.getProductPrice()), String.valueOf(product.getProductQuantity()), String.valueOf(product.isBought()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            setButtonListener(true);
+        }
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
@@ -60,27 +75,6 @@ public class FirebaseViewActivity extends SuperActivity {
             @Override
             public void onCancelled(DatabaseError error) {
                 Log.e(TAG, "Failed to read app title value.", error.toException());
-            }
-        });
-
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String productName = "";
-                int productQuantity = 1;
-                float productPrice = 0.f;
-                boolean isBought = false;
-                try {
-                    productName = etName.getText().toString();
-                    productPrice = Float.valueOf(etPrice.getText().toString());
-                    productQuantity = Integer.valueOf(etQuantity.getText().toString());
-                    isBought = cbBought.isChecked();
-                    createProduct(productName, productPrice, productQuantity, isBought);
-                    fieldReset();
-                } catch (Exception e) {
-                    etName.setError("There are errors in your product definition.");
-                }
-
             }
         });
     }
@@ -128,7 +122,7 @@ public class FirebaseViewActivity extends SuperActivity {
         mFirebaseDatabase.child(String.valueOf(productId)).child("productName").setValue(name);
         mFirebaseDatabase.child(String.valueOf(productId)).child("productPrice").setValue(price);
         mFirebaseDatabase.child(String.valueOf(productId)).child("productQuantity").setValue(quantity);
-        mFirebaseDatabase.child(String.valueOf(productId)).child("isBought").setValue(isbought);
+        mFirebaseDatabase.child(String.valueOf(productId)).child("bought").setValue(isbought);
     }
 
     private void initGUI() {
@@ -145,6 +139,7 @@ public class FirebaseViewActivity extends SuperActivity {
         etPrice.setText("");
         etQuantity.setText("");
         cbBought.setChecked(false);
+        btnSave.setText("Save");
     }
 
     public void returnToMainActivity(View view) {
@@ -152,4 +147,41 @@ public class FirebaseViewActivity extends SuperActivity {
         startActivity(intent);
     }
 
+    private void setValues(String name, String price, String quantity, String isBought) {
+        etName.setText(name);
+        etPrice.setText(price);
+        etQuantity.setText(quantity);
+        cbBought.setChecked(Boolean.parseBoolean(isBought));
+    }
+
+    private void setButtonListener(final boolean state) {
+        if(!state)
+            btnSave.setText("Edit");
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String productName = "";
+                int productQuantity = 1;
+                float productPrice = 0.f;
+                boolean isBought = false;
+                try {
+                    productName = etName.getText().toString();
+                    productPrice = Float.valueOf(etPrice.getText().toString());
+                    productQuantity = Integer.valueOf(etQuantity.getText().toString());
+                    isBought = cbBought.isChecked();
+                    if(state) {
+                        createProduct(productName, productPrice, productQuantity, isBought);
+                    }
+                    else {
+                        updateProduct(productName, productPrice, productQuantity, isBought);
+                    }
+                    fieldReset();
+                } catch (Exception e) {
+                    etName.setError("There are errors in your product definition.");
+                }
+
+            }
+        });
+    }
 }

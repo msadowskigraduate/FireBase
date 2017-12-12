@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -121,10 +122,24 @@ public class MainActivity extends SuperActivity {
 
     private void initializeGUI() {
         listViewProducts = (ListView) findViewById(R.id.lvProducts);
+        initListViewOnItemClick();
     }
 
     public void refreshMainActivity(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+    //TODO edit endpoint
+    private void initListViewOnItemClick() {
+        listViewProducts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position,
+                                    long id) {
+                Product product = products.get(position);
+                Intent intent = new Intent(MainActivity.this, FirebaseViewActivity.class);
+                intent.putExtra("product", product);
+                startActivity(intent);
+            }
+        });
     }
 }
