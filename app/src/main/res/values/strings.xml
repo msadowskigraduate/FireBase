@@ -7,5 +7,7 @@
     <string name="edittext_hint_new_task">New product</string>
     <string name="button_save">Save product</string>
     <string name="button_cancel">Cancel</string>
+
+    <string name="isBought">Is product bought?</string>
 </resources>
 
