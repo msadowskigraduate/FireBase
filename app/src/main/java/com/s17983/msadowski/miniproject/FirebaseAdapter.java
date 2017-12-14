@@ -13,6 +13,8 @@ import com.google.firebase.database.DatabaseReference;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import lombok.Builder;
 
 /**
@@ -25,15 +27,7 @@ public class FirebaseAdapter extends ArrayAdapter<Product> {
     private Activity context;
     private DatabaseReference mFirebaseDatabase;
 
-    @Builder
-    public static class ViewHolder {
-        public TextView tvProductName;
-        public TextView tvProductPrice;
-        public TextView tvProductQuantity;
-        public CheckBox cbProductBought;
-        public CheckBox cbDelete;
-    }
-
+    @Inject
     public FirebaseAdapter(Activity context, List<Product> products, DatabaseReference mFirebaseDatabase) {
         super(context, R.layout.product_list_item, products);
         this.context = context;
@@ -57,7 +51,6 @@ public class FirebaseAdapter extends ArrayAdapter<Product> {
                     .cbDelete((CheckBox) rowView.findViewById(R.id.bDelete))
                     .build();
 
-            viewHolder.cbDelete.setTag(position);
             viewHolder.cbDelete.setOnClickListener(
                     new View.OnClickListener() {
                         @Override
@@ -72,7 +65,6 @@ public class FirebaseAdapter extends ArrayAdapter<Product> {
                     }
             );
             rowView.setTag(viewHolder);
-
         } else {
             viewHolder = (FirebaseAdapter.ViewHolder) rowView.getTag();
         }
@@ -80,12 +72,16 @@ public class FirebaseAdapter extends ArrayAdapter<Product> {
         viewHolder.tvProductName.setText(product.getProductName());
         viewHolder.tvProductPrice.setText(String.valueOf(product.getProductPrice()));
         viewHolder.tvProductQuantity.setText(String.valueOf(product.getProductQuantity()));
-
-        if (product.isBought()) {
-            viewHolder.cbProductBought.setChecked(true);
-        } else {
-            viewHolder.cbProductBought.setChecked(false);
-        }
+        viewHolder.cbProductBought.setChecked(product.isBought());
         return rowView;
+    }
+
+    @Builder
+    public static class ViewHolder {
+        public TextView tvProductName;
+        public TextView tvProductPrice;
+        public TextView tvProductQuantity;
+        public CheckBox cbProductBought;
+        public CheckBox cbDelete;
     }
 }

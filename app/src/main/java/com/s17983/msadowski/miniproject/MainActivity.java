@@ -2,6 +2,8 @@ package com.s17983.msadowski.miniproject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,17 +20,21 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends SuperActivity {
+import javax.inject.Inject;
+
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = FirebaseViewActivity.class.getSimpleName();
     private List<Product> products;
-    private FirebaseAdapter listAdapter;
+
+    @Inject
+    public FirebaseAdapter listAdapter;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
     private ListView listViewProducts;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_product_list);
         initializeGUI();
 
         mFirebaseInstance = FirebaseDatabase.getInstance();
@@ -82,7 +88,8 @@ public class MainActivity extends SuperActivity {
 
     private void initializeGUI() {
         listViewProducts = (ListView) findViewById(R.id.lvProducts);
-        Button button3 = (Button) findViewById(R.id.firebase);
+        //Button button3 = (Button) findViewById(R.id.firebase);
+        FloatingActionButton button3 = (FloatingActionButton) findViewById(R.id.btnAddNew);
         initListViewOnItemClick();
         button3.setOnClickListener(new View.OnClickListener() {
             @Override

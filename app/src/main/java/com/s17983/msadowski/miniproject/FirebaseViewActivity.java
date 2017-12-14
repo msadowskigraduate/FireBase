@@ -2,7 +2,7 @@ package com.s17983.msadowski.miniproject;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,13 +15,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
-public class FirebaseViewActivity extends SuperActivity {
+public class FirebaseViewActivity extends AppCompatActivity {
 
     private static final String TAG = FirebaseViewActivity.class.getSimpleName();
 
-    ArrayList<Product> products;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
 
@@ -38,7 +35,6 @@ public class FirebaseViewActivity extends SuperActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firebase_view);
-
         initGUI();
 
         Intent i = getIntent();
@@ -79,9 +75,6 @@ public class FirebaseViewActivity extends SuperActivity {
         });
     }
 
-    /**
-     * Creating new user node under 'users'
-     */
     public void createProduct(String productName, float productPrice,
                               int productQuantity, boolean isBought) {
 

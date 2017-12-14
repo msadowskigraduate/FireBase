@@ -1,41 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="horizontal"
-    android:padding="10dp">
+    android:padding="5dp">
+
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/tvProductName"
-        android:layout_marginLeft="10dp"
+        android:autoSizeMinTextSize="6pt"
+        android:autoSizeMaxTextSize="12pt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:text="name"
-        android:textAppearance="?android:attr/textAppearanceLarge">
+        android:textColor="@color/colorAccent">
+
     </TextView>
+
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/tvProductPrice"
-        android:layout_marginLeft="10dp"
-        android:text="price"
-        android:textAppearance="?android:attr/textAppearanceLarge">
-    </TextView>
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tvProductQuantity"
-        android:layout_marginLeft="10dp"
-        android:text="quantity"
-        android:textAppearance="?android:attr/textAppearanceLarge">
+        android:layout_marginStart="10dp"
+        android:autoSizeMinTextSize="6pt"
+        android:autoSizeMaxTextSize="12pt"
+        android:text="price"
+        android:textColor="@color/colorAccent">
+
     </TextView>
+
+    <TextView
+        android:id="@+id/tvProductQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:autoSizeMinTextSize="6pt"
+        android:autoSizeMaxTextSize="12pt"
+        android:text="q"
+        android:textColor="@color/colorAccent">
+
+    </TextView>
+
     <CheckBox
         android:id="@+id/cbProductBought"
-        android:clickable="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:layout_weight="1"
+        android:clickable="false"
         android:focusable="false"
         android:text="Bought?" />
 
@@ -43,10 +56,9 @@
         android:id="@+id/bDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_weight="1"
-        android:layout_marginLeft="10dp"
+        android:focusable="false"
         android:text="Delete"
-        android:textColor="@color/colorAccent"
-        android:focusable="false"/>
-
-</LinearLayout>
+        android:textColor="@color/black" />
+</GridLayout>

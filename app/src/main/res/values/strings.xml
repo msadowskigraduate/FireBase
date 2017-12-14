@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">miniProject</string>
+    <string name="app_name">Firebase Database</string>
     <string name="message">Message</string>
     <string name="database_name">product_list_database</string>
     <string name="button_add">New Product</string>
