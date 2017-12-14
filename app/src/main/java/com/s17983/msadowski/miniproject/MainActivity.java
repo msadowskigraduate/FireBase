@@ -30,69 +30,34 @@ public class MainActivity extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initializeGUI();
-        Button button3 = (Button) findViewById(R.id.firebase);
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext(), FirebaseViewActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        VIEW_ADDRESS = (ViewGroup) ((ViewGroup) this
-                .findViewById(android.R.id.content)).getChildAt(0);
-
-        changeColorOnAllViews(VIEW_ADDRESS);
-        changeTextSizeOnAllViews(VIEW_ADDRESS);
-
 
         mFirebaseInstance = FirebaseDatabase.getInstance();
-
-        // get reference to 'users' node
         mFirebaseDatabase = mFirebaseInstance.getReference("products");
-
-        // store app title to 'app_title' node
         mFirebaseInstance.getReference("android-firebase-database").setValue("Realtime Database");
-
         mFirebaseInstance.getReference("android-firebase-database").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e(TAG, "App title updated");
                 String appTitle = dataSnapshot.getValue(String.class);
-                // update toolbar title
                 getSupportActionBar().setTitle(appTitle);
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
-                // Failed to read value
                 Log.e(TAG, "Failed to read app title value.", error.toException());
             }
         });
-        // app_title change listener
-        mFirebaseInstance.getReference("products").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                products = new ArrayList<>();
-                for (DataSnapshot noteDataSnapshot : dataSnapshot.getChildren()) {
-                    Product product = noteDataSnapshot.getValue(Product.class);
-                    products.add(product);
-                    Log.e(TAG, product.getProductName());
-                    fillListViewData(products);
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.e(TAG, "Failed to read app title value.", error.toException());
-            }
-        });
+
+        getDataFromDB();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        getDataFromDB();
+    }
 
+    private void getDataFromDB() {
         mFirebaseInstance.getReference("products").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -106,15 +71,10 @@ public class MainActivity extends SuperActivity {
 
             @Override
             public void onCancelled(DatabaseError error) {
-                // Failed to read value
                 Log.e(TAG, "Failed to read app title value.", error.toException());
             }
         });
-
     }
-
-    //TODO Edit
-    
     private void fillListViewData(List<Product> products) {
         listAdapter = new FirebaseAdapter(this, products, mFirebaseDatabase);
         listViewProducts.setAdapter(listAdapter);
@@ -122,14 +82,22 @@ public class MainActivity extends SuperActivity {
 
     private void initializeGUI() {
         listViewProducts = (ListView) findViewById(R.id.lvProducts);
+        Button button3 = (Button) findViewById(R.id.firebase);
         initListViewOnItemClick();
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), FirebaseViewActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void refreshMainActivity(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
-    //TODO edit endpoint
+
     private void initListViewOnItemClick() {
         listViewProducts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

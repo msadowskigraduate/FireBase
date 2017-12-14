@@ -13,6 +13,8 @@ import com.google.firebase.database.DatabaseReference;
 
 import java.util.List;
 
+import lombok.Builder;
+
 /**
  * Created by sadowsm3 on 11.12.2017.
  */
@@ -22,6 +24,8 @@ public class FirebaseAdapter extends ArrayAdapter<Product> {
     private List<Product> products;
     private Activity context;
     private DatabaseReference mFirebaseDatabase;
+
+    @Builder
     public static class ViewHolder {
         public TextView tvProductName;
         public TextView tvProductPrice;
@@ -45,23 +49,25 @@ public class FirebaseAdapter extends ArrayAdapter<Product> {
         if (rowView == null) {
             final LayoutInflater layoutInflater = context.getLayoutInflater();
             rowView = layoutInflater.inflate(R.layout.product_list_item, null, true);
-            viewHolder = new FirebaseAdapter.ViewHolder();
-            viewHolder.tvProductName = (TextView) rowView.findViewById(R.id.tvProductName);
-            viewHolder.tvProductPrice = (TextView) rowView.findViewById(R.id.tvProductPrice);
-            viewHolder.tvProductQuantity = (TextView) rowView.findViewById(R.id.tvProductQuantity);
-            viewHolder.cbProductBought = (CheckBox) rowView.findViewById(R.id.cbProductBought);
-            viewHolder.cbDelete = (CheckBox) rowView.findViewById(R.id.bDelete);
+            viewHolder = ViewHolder.builder()
+                    .tvProductName((TextView) rowView.findViewById(R.id.tvProductName))
+                    .tvProductPrice((TextView) rowView.findViewById(R.id.tvProductPrice))
+                    .tvProductQuantity((TextView) rowView.findViewById(R.id.tvProductQuantity))
+                    .cbProductBought((CheckBox) rowView.findViewById(R.id.cbProductBought))
+                    .cbDelete((CheckBox) rowView.findViewById(R.id.bDelete))
+                    .build();
+
             viewHolder.cbDelete.setTag(position);
             viewHolder.cbDelete.setOnClickListener(
                     new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Log.e("Deleting...", "IN PROCESS position: " + position);
                             Product product = products.get(position);
-                            Log.e("Deleting item of ID: " + product.getProductId(), " position: " + position);
+                            Log.e(getContext().getClass().getName(), "Deleting item of ID: " + product.getProductId() + " position: " + position);
                             mFirebaseDatabase.child(product.getProductId()).removeValue();
                             products.remove(position);
                             notifyDataSetChanged();
+                            Log.e(getContext().getClass().getName(), "Deleted!");
                         }
                     }
             );
